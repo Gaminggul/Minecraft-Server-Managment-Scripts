@@ -1,38 +1,58 @@
-# 🧱 Minecraft Server Tools (mc & mc-new)
+# 🧱 Minecraft Server Tools  
+### `mc` & `mc-new`
 
-Two simple Bash scripts for **setting up** and **managing** Minecraft servers on Linux.  
-No panels. No Docker. No magic. Just clean, transparent server control.
+> Lightweight Bash tools to **create, manage, and run Minecraft servers** on Linux —  
+> without panels, containers, or hidden magic.
+
+---
+
+## 📌 Overview
+
+This repository provides **two complementary CLI tools**:
+
+- **`mc`** – a server manager that runs Minecraft servers inside `screen` sessions  
+- **`mc-new`** – an interactive setup wizard for creating new server instances
+
+Designed for users who want **full control**, **clarity**, and **zero abstraction**.
 
 ---
 
 ## ✨ Features
 
-### `mc` – Server Manager
-- Start Minecraft servers inside **screen sessions**
-- Graceful stop via `stop` command
-- Attach / detach to server console
-- List:
-  - running servers
-  - available server folders
-- Works with **Vanilla, Paper, Purpur, Forge**
+### 🛠️ `mc` – Server Manager
 
-### `mc-new` – Server Setup Wizard
-- Interactive setup wizard
-- Supported software:
+- Start servers inside dedicated **screen sessions**
+- Graceful shutdown via in-game `stop`
+- Attach/detach from the live console
+- List:
+  - running Minecraft servers
+  - available server directories
+- Works with:
+  - Vanilla
+  - Paper
+  - Purpur
+  - Forge
+
+---
+
+### 🧪 `mc-new` – Server Setup Wizard
+
+- Fully interactive terminal wizard
+- Supported server software:
   - Vanilla
   - Paper
   - Purpur
   - Forge (official installer)
-- Automatically creates:
+- Automatically generates:
   - `server.jar` (or symlink for Forge)
   - `eula.txt`
   - minimal `server.properties`
   - `run.sh`
-- Optional immediate start after setup
+- Optional immediate server start after setup
 
 ---
 
-## 📁 Recommended Directory Structure
+## 📁 Recommended Directory Layout
 
 ```text
 /home/minecraft/
@@ -42,13 +62,13 @@ No panels. No Docker. No magic. Just clean, transparent server control.
 │   ├── eula.txt
 │   └── run.sh
 ├── modded_1.20.1/
-│   ├── forge-*.jar
-│   ├── server.jar -> forge-*.jar
+│   ├── forge-1.20.1-47.2.20.jar
+│   ├── server.jar -> forge-1.20.1-47.2.20.jar
 │   └── run.sh
 ```
 
-One server = one folder.  
-Simple, predictable, clean.
+**Rule:** one server = one directory  
+Predictable, debuggable, clean.
 
 ---
 
@@ -56,15 +76,16 @@ Simple, predictable, clean.
 
 - Linux (tested on Debian / Ubuntu)
 - Bash
-- Java 17+ (depending on Minecraft version)
+- Java **17+** (depending on Minecraft version)
 - `screen`
 - For `mc-new` additionally:
   - `curl`
   - `jq`
 
-Install dependencies (Debian/Ubuntu):
+### Install dependencies (Debian / Ubuntu)
 
 ```bash
+sudo apt update
 sudo apt install screen curl jq openjdk-21-jre-headless
 ```
 
@@ -72,26 +93,28 @@ sudo apt install screen curl jq openjdk-21-jre-headless
 
 ## 🚀 Installation
 
-1. Clone the repository:
+### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/<your-user>/<repo>.git
-cd <repo>
+git clone https://github.com/Gaminggul/Minecraft-Server-Managment-Scripts.git
+cd minecraft-server-managment-scripts
 ```
 
-2. **Edit the base directory in both scripts**:
+### 2️⃣ Configure base directory
+
+Edit **both scripts** and set your server root:
 
 ```bash
 BASE_DIR="/home/minecraft"
 ```
 
-3. Make scripts executable:
+### 3️⃣ Make scripts executable
 
 ```bash
 chmod +x mc mc-new
 ```
 
-4. (Optional) Make them globally available:
+### 4️⃣ (Optional) Install globally
 
 ```bash
 sudo ln -s "$(pwd)/mc" /usr/local/bin/mc
@@ -102,45 +125,45 @@ sudo ln -s "$(pwd)/mc-new" /usr/local/bin/mc-new
 
 ## 🧪 Usage
 
-### Create a new server
+### ➕ Create a new server
 
 ```bash
 mc-new
 ```
 
-The wizard will ask for:
+You will be prompted for:
 - server name
 - software (Vanilla / Paper / Purpur / Forge)
 - Minecraft version
-- for Forge: exact Forge version
+- **Forge only:** exact Forge version (e.g. `1.20.1-47.2.20`)
 
 ---
 
-### Start a server
+### ▶️ Start a server
 
 ```bash
 mc start <servername>
 ```
 
-### Stop a server
+### ⏹ Stop a server
 
 ```bash
 mc stop <servername>
 ```
 
-### Attach to server console
+### 🖥 Attach to console
 
 ```bash
 mc attach <servername>
 ```
 
-### List running servers
+### 📋 List running servers
 
 ```bash
 mc list
 ```
 
-### List available server folders
+### 📂 List available servers
 
 ```bash
 mc servers
@@ -150,58 +173,59 @@ mc servers
 
 ## 🔥 Forge Notes (Important)
 
-- Forge **always requires an exact Forge version**
+- Forge **always requires an exact version**
   - Example: `1.20.1-47.2.20`
-- The script:
+- The setup script:
   - downloads the official Forge installer
   - runs `--installServer`
   - creates a `server.jar` symlink automatically
-- **Some Forge versions generate their own `run.sh`**
-  - In that case, the script tells you clearly
-  - No silent failures
+- Some Forge versions generate their own `run.sh`
+  - In those cases, the script informs you explicitly
+  - No silent failures, no guessing
 
 ---
 
-## ⚠️ What This Repo Is NOT
+## ⚠️ What This Repository Is *Not*
 
 - ❌ No web panel
 - ❌ No Docker setup
 - ❌ No hosting service
-- ❌ No “one-click everything”
+- ❌ No one-click magic
 
-**Goal:**  
-Clean server management for people who want control and understand what’s running.
+### 🎯 Purpose
+
+A clean, transparent toolchain for users who want to **understand and control** their Minecraft servers.
 
 ---
 
-## 🛠️ Configuration
+## 🛠 Configuration
 
-In the `mc` script:
+Inside `mc`:
 
 ```bash
+JAVA="java"
 MIN_MEM="8G"
 MAX_MEM="12G"
-JAVA="java"
 JAR_NAME="server.jar"
 ```
 
-Everything is intentionally simple.
+Everything is intentionally explicit.
 
 ---
 
-## 🧠 Philosophy
+## 🧠 Design Philosophy
 
-- Clear instead of clever
-- Bash instead of overengineering
-- Control instead of black boxes
-- Errors should be visible, not hidden
+- **Clear** instead of clever  
+- **Bash** instead of overengineering  
+- **Control** instead of black boxes  
+- Errors should be **visible**, not hidden  
 
 ---
 
 ## 📄 License
 
 MIT License  
-Do whatever you want — but understand it first.
+Use it, modify it, learn from it.
 
 ---
 
